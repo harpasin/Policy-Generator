@@ -1,0 +1,56 @@
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: place-ns
+  namespace: rhacm-policies
+spec:
+  clusterSelector:
+    matchExpressions:
+    - key: environment
+      operator: In
+      values:
+      - dev
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: binding-create-demo-namespace
+  namespace: rhacm-policies
+placementRef:
+  apiGroup: apps.open-cluster-management.io
+  kind: PlacementRule
+  name: place-ns
+subjects:
+- apiGroup: policy.open-cluster-management.io
+  kind: Policy
+  name: create-demo-namespace
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  annotations:
+    policy.open-cluster-management.io/categories: CM Configuration Management
+    policy.open-cluster-management.io/controls: CM-2 Baseline Configuration
+    policy.open-cluster-management.io/description: ""
+    policy.open-cluster-management.io/standards: NIST SP 800-53
+  name: create-demo-namespace
+  namespace: rhacm-policies
+spec:
+  disabled: false
+  policy-templates:
+  - objectDefinition:
+      apiVersion: policy.open-cluster-management.io/v1
+      kind: ConfigurationPolicy
+      metadata:
+        name: create-demo-namespace
+      spec:
+        object-templates:
+        - complianceType: musthave
+          objectDefinition:
+            apiVersion: v1
+            kind: Namespace
+            metadata:
+              name: demo-ns
+        remediationAction: enforce
+        severity: low
+  remediationAction: enforce

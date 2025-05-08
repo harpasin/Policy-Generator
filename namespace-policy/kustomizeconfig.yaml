@@ -1,0 +1,6 @@
+nameReference:
+- kind: Namespace
+  fieldSpecs:
+  - path: metadata/name
+    kind: Namespace
+

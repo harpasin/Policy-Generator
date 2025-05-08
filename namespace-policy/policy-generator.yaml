@@ -1,0 +1,18 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
+metadata:
+  name: namespace-policy
+policyDefaults:
+  namespace: rhacm-policies
+  remediationAction: enforce
+  complianceType: musthave
+  severity: low
+  placement:
+    name: place-ns
+    clusterSelectors:
+      environment: dev
+policies:
+  - name: create-demo-namespace
+    manifests:
+      - path: ./namespace.yaml
+
