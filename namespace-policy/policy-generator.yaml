@@ -3,16 +3,12 @@ kind: PolicyGenerator
 metadata:
   name: namespace-policy
 policyDefaults:
-  namespace: rhacm-policies
-  remediationAction: enforce
-  complianceType: musthave
-  severity: low
+  namespace: default
   placement:
-    name: place-ns
-    clusterSelectors:
-      environment: dev
+    labelSelector:
+      rhdp_usage: development
+  remediationAction: inform
 policies:
   - name: create-demo-namespace
     manifests:
-      - path: ./namespace.yaml
-
+      - path: namespace.yaml
